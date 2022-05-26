@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="9cdd885414554ac3bb5dbaf7d904d0c8" Name="Diagram1" ZoomLevel="71">
+        <EntityTypeShape EntityType="ITIModel.Account" Width="1.5" PointX="12.125" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ITIModel.Attendance" Width="1.5" PointX="4.125" PointY="14.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ITIModel.Course" Width="1.5" PointX="13.5" PointY="11.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ITIModel.Department" Width="1.5" PointX="7.375" PointY="10.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ITIModel.Instructor" Width="1.5" PointX="3.75" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ITIModel.Student" Width="1.5" PointX="10" PointY="13" IsExpanded="true" />
+        <EntityTypeShape EntityType="ITIModel.StudentCourseDegree" Width="1.5" PointX="12.625" PointY="16.25" IsExpanded="true" />
+        <AssociationConnector Association="ITIModel.FK_Account_Student" ManuallyRouted="false" />
+        <AssociationConnector Association="ITIModel.FK_Attendance_Student" ManuallyRouted="false" />
+        <AssociationConnector Association="ITIModel.FK_Course_ToDepartment" ManuallyRouted="false" />
+        <AssociationConnector Association="ITIModel.FK_StudentCourseDegree_Course" ManuallyRouted="false" />
+        <AssociationConnector Association="ITIModel.FK_Instructor_Department1" ManuallyRouted="false" />
+        <AssociationConnector Association="ITIModel.FK_Student_Department" ManuallyRouted="false" />
+        <AssociationConnector Association="ITIModel.FK_StudentCourseDegree_Student" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

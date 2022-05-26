@@ -1,0 +1,493 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ITIModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Attendance">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StudentID" Type="int" />
+          <Property Name="NoOFAbsentDays" Type="int" />
+          <Property Name="NoOf AttendDays" Type="int" />
+        </EntityType>
+        <EntityType Name="Course">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Hours" Type="int" />
+          <Property Name="Degree" Type="int" />
+          <Property Name="MinDegree" Type="int" />
+          <Property Name="DeptID" Type="int" />
+        </EntityType>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Manager" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Instructor">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="dept_id" Type="int" />
+          <Property Name="salary" Type="int" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Age" Type="int" />
+          <Property Name="Dept_Id" Type="int" />
+          <Property Name="image" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="StudentCourseDegree">
+          <Key>
+            <PropertyRef Name="Std_ID" />
+            <PropertyRef Name="Crs_ID" />
+          </Key>
+          <Property Name="Std_ID" Type="int" Nullable="false" />
+          <Property Name="Crs_ID" Type="int" Nullable="false" />
+          <Property Name="Degree" Type="int" />
+        </EntityType>
+        <Association Name="FK_Account_Student">
+          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Account">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Attendance_Student">
+          <End Role="Student" Type="Self.Student" Multiplicity="0..1" />
+          <End Role="Attendance" Type="Self.Attendance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Attendance">
+              <PropertyRef Name="StudentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Course_ToDepartment">
+          <End Role="Department" Type="Self.Department" Multiplicity="0..1" />
+          <End Role="Course" Type="Self.Course" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Course">
+              <PropertyRef Name="DeptID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Instructor_Department1">
+          <End Role="Department" Type="Self.Department" Multiplicity="0..1" />
+          <End Role="Instructor" Type="Self.Instructor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Instructor">
+              <PropertyRef Name="dept_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_Department">
+          <End Role="Department" Type="Self.Department" Multiplicity="0..1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="Dept_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentCourseDegree_Course">
+          <End Role="Course" Type="Self.Course" Multiplicity="1" />
+          <End Role="StudentCourseDegree" Type="Self.StudentCourseDegree" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="StudentCourseDegree">
+              <PropertyRef Name="Crs_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentCourseDegree_Student">
+          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="StudentCourseDegree" Type="Self.StudentCourseDegree" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="StudentCourseDegree">
+              <PropertyRef Name="Std_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ITIModelStoreContainer">
+          <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Attendance" EntityType="Self.Attendance" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Course" EntityType="Self.Course" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Instructor" EntityType="Self.Instructor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StudentCourseDegree" EntityType="Self.StudentCourseDegree" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Account_Student" Association="Self.FK_Account_Student">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="Account" EntitySet="Account" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Attendance_Student" Association="Self.FK_Attendance_Student">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="Attendance" EntitySet="Attendance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Course_ToDepartment" Association="Self.FK_Course_ToDepartment">
+            <End Role="Department" EntitySet="Department" />
+            <End Role="Course" EntitySet="Course" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Instructor_Department1" Association="Self.FK_Instructor_Department1">
+            <End Role="Department" EntitySet="Department" />
+            <End Role="Instructor" EntitySet="Instructor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_Department" Association="Self.FK_Student_Department">
+            <End Role="Department" EntitySet="Department" />
+            <End Role="Student" EntitySet="Student" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentCourseDegree_Course" Association="Self.FK_StudentCourseDegree_Course">
+            <End Role="Course" EntitySet="Course" />
+            <End Role="StudentCourseDegree" EntitySet="StudentCourseDegree" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentCourseDegree_Student" Association="Self.FK_StudentCourseDegree_Student">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="StudentCourseDegree" EntitySet="StudentCourseDegree" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ITIModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Student" Relationship="Self.FK_Account_Student" FromRole="Account" ToRole="Student" />
+        </EntityType>
+        <EntityType Name="Attendance">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StudentID" Type="Int32" />
+          <Property Name="NoOFAbsentDays" Type="Int32" />
+          <Property Name="NoOf_AttendDays" Type="Int32" />
+          <NavigationProperty Name="Student" Relationship="Self.FK_Attendance_Student" FromRole="Attendance" ToRole="Student" />
+        </EntityType>
+        <EntityType Name="Course">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Hours" Type="Int32" />
+          <Property Name="Degree" Type="Int32" />
+          <Property Name="MinDegree" Type="Int32" />
+          <Property Name="DeptID" Type="Int32" />
+          <NavigationProperty Name="Department" Relationship="Self.FK_Course_ToDepartment" FromRole="Course" ToRole="Department" />
+          <NavigationProperty Name="StudentCourseDegrees" Relationship="Self.FK_StudentCourseDegree_Course" FromRole="Course" ToRole="StudentCourseDegree" />
+        </EntityType>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Manager" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Courses" Relationship="Self.FK_Course_ToDepartment" FromRole="Department" ToRole="Course" />
+          <NavigationProperty Name="Instructors" Relationship="Self.FK_Instructor_Department1" FromRole="Department" ToRole="Instructor" />
+          <NavigationProperty Name="Students" Relationship="Self.FK_Student_Department" FromRole="Department" ToRole="Student" />
+        </EntityType>
+        <EntityType Name="Instructor">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="dept_id" Type="Int32" />
+          <Property Name="salary" Type="Int32" />
+          <NavigationProperty Name="Department" Relationship="Self.FK_Instructor_Department1" FromRole="Instructor" ToRole="Department" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Age" Type="Int32" />
+          <Property Name="Dept_Id" Type="Int32" />
+          <Property Name="image" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Account" Relationship="Self.FK_Account_Student" FromRole="Student" ToRole="Account" />
+          <NavigationProperty Name="Attendances" Relationship="Self.FK_Attendance_Student" FromRole="Student" ToRole="Attendance" />
+          <NavigationProperty Name="Department" Relationship="Self.FK_Student_Department" FromRole="Student" ToRole="Department" />
+          <NavigationProperty Name="StudentCourseDegrees" Relationship="Self.FK_StudentCourseDegree_Student" FromRole="Student" ToRole="StudentCourseDegree" />
+        </EntityType>
+        <EntityType Name="StudentCourseDegree">
+          <Key>
+            <PropertyRef Name="Std_ID" />
+            <PropertyRef Name="Crs_ID" />
+          </Key>
+          <Property Name="Std_ID" Type="Int32" Nullable="false" />
+          <Property Name="Crs_ID" Type="Int32" Nullable="false" />
+          <Property Name="Degree" Type="Int32" />
+          <NavigationProperty Name="Course" Relationship="Self.FK_StudentCourseDegree_Course" FromRole="StudentCourseDegree" ToRole="Course" />
+          <NavigationProperty Name="Student" Relationship="Self.FK_StudentCourseDegree_Student" FromRole="StudentCourseDegree" ToRole="Student" />
+        </EntityType>
+        <Association Name="FK_Account_Student">
+          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Account">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Attendance_Student">
+          <End Role="Student" Type="Self.Student" Multiplicity="0..1" />
+          <End Role="Attendance" Type="Self.Attendance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Attendance">
+              <PropertyRef Name="StudentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Course_ToDepartment">
+          <End Role="Department" Type="Self.Department" Multiplicity="0..1" />
+          <End Role="Course" Type="Self.Course" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Course">
+              <PropertyRef Name="DeptID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentCourseDegree_Course">
+          <End Role="Course" Type="Self.Course" Multiplicity="1" />
+          <End Role="StudentCourseDegree" Type="Self.StudentCourseDegree" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="StudentCourseDegree">
+              <PropertyRef Name="Crs_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Instructor_Department1">
+          <End Role="Department" Type="Self.Department" Multiplicity="0..1" />
+          <End Role="Instructor" Type="Self.Instructor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Instructor">
+              <PropertyRef Name="dept_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_Department">
+          <End Role="Department" Type="Self.Department" Multiplicity="0..1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="Dept_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentCourseDegree_Student">
+          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="StudentCourseDegree" Type="Self.StudentCourseDegree" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="StudentCourseDegree">
+              <PropertyRef Name="Std_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ITIEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Accounts" EntityType="Self.Account" />
+          <EntitySet Name="Attendances" EntityType="Self.Attendance" />
+          <EntitySet Name="Courses" EntityType="Self.Course" />
+          <EntitySet Name="Departments" EntityType="Self.Department" />
+          <EntitySet Name="Instructors" EntityType="Self.Instructor" />
+          <EntitySet Name="Students" EntityType="Self.Student" />
+          <EntitySet Name="StudentCourseDegrees" EntityType="Self.StudentCourseDegree" />
+          <AssociationSet Name="FK_Account_Student" Association="Self.FK_Account_Student">
+            <End Role="Student" EntitySet="Students" />
+            <End Role="Account" EntitySet="Accounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Attendance_Student" Association="Self.FK_Attendance_Student">
+            <End Role="Student" EntitySet="Students" />
+            <End Role="Attendance" EntitySet="Attendances" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Course_ToDepartment" Association="Self.FK_Course_ToDepartment">
+            <End Role="Department" EntitySet="Departments" />
+            <End Role="Course" EntitySet="Courses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentCourseDegree_Course" Association="Self.FK_StudentCourseDegree_Course">
+            <End Role="Course" EntitySet="Courses" />
+            <End Role="StudentCourseDegree" EntitySet="StudentCourseDegrees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Instructor_Department1" Association="Self.FK_Instructor_Department1">
+            <End Role="Department" EntitySet="Departments" />
+            <End Role="Instructor" EntitySet="Instructors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_Department" Association="Self.FK_Student_Department">
+            <End Role="Department" EntitySet="Departments" />
+            <End Role="Student" EntitySet="Students" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentCourseDegree_Student" Association="Self.FK_StudentCourseDegree_Student">
+            <End Role="Student" EntitySet="Students" />
+            <End Role="StudentCourseDegree" EntitySet="StudentCourseDegrees" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ITIModelStoreContainer" CdmEntityContainer="ITIEntities">
+          <EntitySetMapping Name="Accounts">
+            <EntityTypeMapping TypeName="ITIModel.Account">
+              <MappingFragment StoreEntitySet="Account">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Attendances">
+            <EntityTypeMapping TypeName="ITIModel.Attendance">
+              <MappingFragment StoreEntitySet="Attendance">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+                <ScalarProperty Name="NoOFAbsentDays" ColumnName="NoOFAbsentDays" />
+                <ScalarProperty Name="NoOf_AttendDays" ColumnName="NoOf AttendDays" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Courses">
+            <EntityTypeMapping TypeName="ITIModel.Course">
+              <MappingFragment StoreEntitySet="Course">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Hours" ColumnName="Hours" />
+                <ScalarProperty Name="Degree" ColumnName="Degree" />
+                <ScalarProperty Name="MinDegree" ColumnName="MinDegree" />
+                <ScalarProperty Name="DeptID" ColumnName="DeptID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Departments">
+            <EntityTypeMapping TypeName="ITIModel.Department">
+              <MappingFragment StoreEntitySet="Department">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Manager" ColumnName="Manager" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Instructors">
+            <EntityTypeMapping TypeName="ITIModel.Instructor">
+              <MappingFragment StoreEntitySet="Instructor">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="dept_id" ColumnName="dept_id" />
+                <ScalarProperty Name="salary" ColumnName="salary" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Students">
+            <EntityTypeMapping TypeName="ITIModel.Student">
+              <MappingFragment StoreEntitySet="Student">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Age" ColumnName="Age" />
+                <ScalarProperty Name="Dept_Id" ColumnName="Dept_Id" />
+                <ScalarProperty Name="image" ColumnName="image" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StudentCourseDegrees">
+            <EntityTypeMapping TypeName="ITIModel.StudentCourseDegree">
+              <MappingFragment StoreEntitySet="StudentCourseDegree">
+                <ScalarProperty Name="Std_ID" ColumnName="Std_ID" />
+                <ScalarProperty Name="Crs_ID" ColumnName="Crs_ID" />
+                <ScalarProperty Name="Degree" ColumnName="Degree" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
